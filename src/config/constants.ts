@@ -10,7 +10,7 @@ export const navItems = [
 	},
 
 	{
-		route: '/blogs',
+		route: '/blog',
 		label: 'Blogs',
 	},
 ]

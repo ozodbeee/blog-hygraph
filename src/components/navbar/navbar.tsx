@@ -15,6 +15,7 @@ import {
 	Typography,
 } from '@mui/material'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 interface Props {
@@ -25,6 +26,7 @@ const drawerWidth = 300
 
 const Navbar = ({ window }: Props) => {
 	const [mobileOpen, setMobileOpen] = useState(false)
+	const router = useRouter()
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(prevState => !prevState)
@@ -48,7 +50,10 @@ const Navbar = ({ window }: Props) => {
 			<List>
 				{navItems.map(item => (
 					<ListItem key={item.route} disablePadding>
-						<ListItemButton sx={{ textAlign: 'center' }}>
+						<ListItemButton
+							onClick={() => router.push(item.route)}
+							sx={{ textAlign: 'center' }}
+						>
 							<ListItemText primary={item.label} />
 						</ListItemButton>
 					</ListItem>
@@ -58,9 +63,9 @@ const Navbar = ({ window }: Props) => {
 	)
 
 	return (
-		<Box height={'10vh'} sx={{ display: 'flex' }}>
+		<Box height={'9vh'} sx={{ display: 'flex' }}>
 			<AppBar
-				sx={{ height: '10vh', backgroundColor: '#141414' }}
+				sx={{ backgroundColor: '#141414', height: '9vh' }}
 				component='nav'
 			>
 				<Toolbar>
@@ -69,28 +74,43 @@ const Navbar = ({ window }: Props) => {
 						aria-label='open drawer'
 						edge='start'
 						onClick={handleDrawerToggle}
-						sx={{ mr: 2, display: { sm: 'none' } }}
+						sx={{ mr: 2, display: { sm: 'none' }, justifyContent: 'end' }}
 					>
 						<MenuIcon />
 					</IconButton>
 					<Box
 						sx={{
 							flexGrow: 1,
-							display: { xs: 'none', sm: 'flex', alignItems: 'center', gap: 3 },
+							display: {
+								xs: 'none',
+								sm: 'flex',
+								alignItems: 'center',
+								gap: 3,
+								cursor: 'pointer',
+							},
 						}}
+						onClick={() => router.push('/')}
 					>
 						<Image src={'/logo.svg'} alt='Image' width={45} height={45} />
 						<Typography
 							variant='h6'
 							component='div'
-							style={{ fontWeight: 'bold', fontSize: '25px' }}
+							style={{
+								fontWeight: 'bold',
+								fontSize: '25px',
+								cursor: 'pointer',
+							}}
 						>
 							OZODBEEE
 						</Typography>
 					</Box>
 					<Box sx={{ display: { xs: 'none', sm: 'block' } }}>
 						{navItems.map(item => (
-							<Button key={item.route} sx={{ color: '#fff' }}>
+							<Button
+								onClick={() => router.push(item.route)}
+								key={item.route}
+								sx={{ color: '#fff' }}
+							>
 								{item.label}
 							</Button>
 						))}

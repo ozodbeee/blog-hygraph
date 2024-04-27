@@ -1,10 +1,15 @@
+import { calculateEstimatedTimeToRead } from '@/helpers/time.format'
 import { Avatar, Box, Typography } from '@mui/material'
 import { format } from 'date-fns'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
+import { HeroProps } from './hero.props'
 
-const Hero = () => {
+const Hero = ({ blogs }: HeroProps) => {
+	const router = useRouter()
+
 	return (
 		<Box width={'100%'} height={'70vh'}>
 			<Carousel
@@ -15,11 +20,15 @@ const Hero = () => {
 					},
 				}}
 			>
-				{data.map(item => (
-					<Box key={item.image}>
+				{blogs.map(item => (
+					<Box
+						key={item.id}
+						sx={{ cursor: 'pointer' }}
+						onClick={() => router.push(`/blog/${item.slug}`)}
+					>
 						<Box sx={{ position: 'relative', width: '100%', height: '70vh' }}>
 							<Image
-								src={item.image}
+								src={item.image.url}
 								alt={item.title}
 								fill
 								style={{ objectFit: 'cover' }}
@@ -52,16 +61,19 @@ const Hero = () => {
 								</Typography>
 								<Typography
 									color={'gray'}
-									sx={{ fontSize: { xs: '20px', md: '25px' } }}
+									sx={{ fontSize: { xs: '20px', md: '20px' } }}
 								>
-									{item.exerpt}
+									{item.excerpt}
 								</Typography>
 								<Box sx={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-									<Avatar alt={item.author.name} src={item.author.image} />
+									<Avatar alt={item.author.name} src={item.author.avatar.url} />
 									<Box>
 										<Typography>{item.author.name}</Typography>
 										<Box>
-											{format(new Date(), 'dd MMM, yyyy')} &#x2022; 10min read
+											{format(new Date(item.createdAt), 'dd MMM, yyyy')}{' '}
+											&#x2022;{' '}
+											{calculateEstimatedTimeToRead(item.description.text)}min
+											read
 										</Box>
 									</Box>
 								</Box>

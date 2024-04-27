@@ -1,28 +1,24 @@
-import { Content, Hero, Sidebar } from '@/components'
+import { Content } from '@/components'
 import { BlogsTyps } from '@/interfaces/blogs.interface'
-import { CategoryTyps } from '@/interfaces/categories.interface'
 import Layout from '@/layout/layout'
 import SEO from '@/layout/seo/seo'
 import { BlogsService } from '@/services/blog.service'
 import { Box } from '@mui/material'
 import { GetServerSideProps } from 'next'
 
-const IndexPage = ({ blogs, latestBlogs, categories }: HomePageProps) => {
-	console.log(blogs)
-
+const BlogPage = ({ blogs }: BlogPageProps) => {
 	return (
-		<SEO>
+		<SEO metaTitle='All blogs'>
 			<Layout>
-				<Hero blogs={blogs.slice(0, 3)} />
 				<Box
 					sx={{
 						display: 'flex',
 						gap: '20px',
 						flexDirection: { xs: 'column', md: 'row' },
 						padding: '20px',
+						justifyContent: 'center',
 					}}
 				>
-					<Sidebar latestBlogs={latestBlogs} categories={categories} />
 					<Content blogs={blogs} />
 				</Box>
 			</Layout>
@@ -30,26 +26,18 @@ const IndexPage = ({ blogs, latestBlogs, categories }: HomePageProps) => {
 	)
 }
 
-export default IndexPage
+export default BlogPage
 
 export const getServerSideProps: GetServerSideProps<
-	HomePageProps
+	BlogPageProps
 > = async () => {
 	const blogs = await BlogsService.getAllBlogs()
-	const latestBlogs = await BlogsService.getLatestBlog()
-	const categories = await BlogsService.getCategories()
 
 	return {
-		props: {
-			blogs,
-			latestBlogs,
-			categories,
-		},
+		props: { blogs },
 	}
 }
 
-interface HomePageProps {
+interface BlogPageProps {
 	blogs: BlogsTyps[]
-	latestBlogs: BlogsTyps[]
-	categories: CategoryTyps[]
 }

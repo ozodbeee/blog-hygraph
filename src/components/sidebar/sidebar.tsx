@@ -1,10 +1,13 @@
-import { navItems } from '@/config/constants'
 import { Avatar, Box, Button, Divider, Typography } from '@mui/material'
 import { format } from 'date-fns'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { Fragment } from 'react'
+import { SidebarProps } from './sidebar.props'
 
-const Sidebar = () => {
+const Sidebar = ({ latestBlogs, categories }: SidebarProps) => {
+	const router = useRouter()
+
 	return (
 		<Box width={{ xs: '100%', md: '30%' }}>
 			<Box position={'sticky'} top={'80px'} sx={{ transition: 'all .3s ease' }}>
@@ -13,13 +16,18 @@ const Sidebar = () => {
 					<Box
 						sx={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}
 					>
-						{data.map(item => (
-							<Box key={item.title} marginTop={'20px'}>
+						{latestBlogs.map(item => (
+							<Box
+								sx={{ cursor: 'pointer' }}
+								onClick={() => router.push(`/blog/${item.slug}`)}
+								key={item.id}
+								marginTop={'20px'}
+							>
 								<Box
 									sx={{ display: 'flex', gap: '20px', alignItems: 'center' }}
 								>
 									<Image
-										src={item.image}
+										src={item.image.url}
 										alt={item.title}
 										width={130}
 										height={100}
@@ -34,13 +42,16 @@ const Sidebar = () => {
 									>
 										<Typography variant='body1'>{item.title}</Typography>
 										<Box sx={{ display: 'flex', gap: '10px' }}>
-											<Avatar alt={item.author.name} src={item.author.image} />
+											<Avatar
+												alt={item.author.name}
+												src={item.author.avatar.url}
+											/>
 											<Box>
 												<Typography variant='body2'>
 													{item.author.name}
 												</Typography>
 												<Box sx={{ opacity: '.6' }}>
-													{format(new Date(), 'dd MMM, yyyy')}
+													{format(new Date(item.createdAt), 'dd MMM, yyyy')}
 												</Box>
 											</Box>
 										</Box>
@@ -63,11 +74,12 @@ const Sidebar = () => {
 					<Box
 						sx={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}
 					>
-						{navItems.map(nav => (
-							<Fragment key={nav.route}>
+						{categories.map(nav => (
+							<Fragment key={nav.slug}>
 								<Button
 									fullWidth
 									sx={{ justifyContent: 'flex-start', height: '50px' }}
+									onClick={() => router.push(`/category/${nav.slug}`)}
 								>
 									{nav.label}
 								</Button>

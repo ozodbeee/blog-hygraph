@@ -16,3 +16,7 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-thumb:hover {
 	background: linear-gradient(129deg, #2b6cb0 0%, #2b6cb0 100%);
 }
+
+#nprogress .bar {
+	z-index: 1110 !important;
+}
