@@ -43,7 +43,7 @@ const Navbar = ({ window }: Props) => {
 					variant='h6'
 					style={{ fontWeight: 'bold', fontSize: '25px' }}
 				>
-					OZODBEEE
+					OZOD.AC
 				</Typography>
 			</Box>
 			<Divider />
@@ -101,7 +101,7 @@ const Navbar = ({ window }: Props) => {
 								cursor: 'pointer',
 							}}
 						>
-							OZODBEEE
+							OZOD.AC
 						</Typography>
 					</Box>
 					<Box sx={{ display: { xs: 'none', sm: 'block' } }}>
